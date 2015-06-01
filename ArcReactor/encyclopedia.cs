@@ -13,35 +13,6 @@ namespace ArcReactor
         private string filepath;
         private string fileType;
 
-        /// <summary>
-        /// Where are my godamn spells?
-        /// </summary>
-        public string Filename
-        {
-            get
-            {
-                return filepath;
-            }
-            set
-            {
-                filepath = value;
-            }
-        }
-
-
-        /// <summary>
-        /// Your godamn spells
-        /// </summary>
-        public List<Spell> SpellList
-        {
-            get
-            {
-                return spellList;
-            }
-            set
-            {
-            }
-        }
 
         public override string ToString()
         {
@@ -71,7 +42,9 @@ namespace ArcReactor
         public object study()
         {
             XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(Filename);
+            xmlDoc.Load(filepath);
+
+
             foreach (XmlNode spellbook in xmlDoc.DocumentElement.ChildNodes)
             {
                 Spell curspell = new Spell();
@@ -124,6 +97,8 @@ namespace ArcReactor
         {
 
             var s = "";
+
+
             foreach (var curspell in spellList)
             {
                 s +=
