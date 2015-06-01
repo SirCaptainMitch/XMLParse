@@ -21,7 +21,7 @@ namespace XMLParse
         }
 
         // Save location set up 
-        private void btnOut_Click(object sender, EventArgs e)
+        private void btnOut_Click(object sender, EventArgs e)            
         {
             using (SaveFileDialog sf = new SaveFileDialog())
             {
@@ -29,7 +29,7 @@ namespace XMLParse
                 sf.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop).ToString();
                 sf.Filter = "Text File (*.txt) | *.txt";
                 sf.Title = "Save Data To...";
-                sf.FileName = "Output.txt";
+                sf.FileName = "output.txt";
                 if (sf.ShowDialog() == DialogResult.OK)
                 {
                     txtOut.Text = sf.FileName;
@@ -43,9 +43,7 @@ namespace XMLParse
             {
                 sf.DefaultExt = "txt";
                 sf.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop).ToString();
-                //sf.Filter = "Text File (*.txt) | *.txt"; -- not needed 
-                sf.Title = "Save Data To...";
-                sf.FileName = cboType.SelectedItem.ToString() + ".txt";
+                sf.Title = "Save Data To...";                
                 if (sf.ShowDialog() == DialogResult.OK)
                 {
                     txtIn.Text = sf.FileName;
@@ -59,12 +57,6 @@ namespace XMLParse
             string path = txtOut.Text;
 
             encyclopedia xml = new encyclopedia(Filename: txtIn.Text, FileType: cboType.SelectedItem.ToString());
-
-            // Should just do this in the class instead of init it here? 
-            //xml.study();
-
-            //xml.getInserts();
-
 
             if (!File.Exists(path))
             {
