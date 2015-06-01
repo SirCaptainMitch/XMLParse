@@ -61,7 +61,9 @@ namespace XMLParse
             encyclopedia xml = new encyclopedia(Filename: txtIn.Text, FileType: cboType.SelectedItem.ToString());
 
             // Should just do this in the class instead of init it here? 
-            xml.study();
+            //xml.study();
+
+            //xml.getInserts();
 
 
             if (!File.Exists(path))
