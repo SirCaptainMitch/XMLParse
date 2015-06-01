@@ -10,6 +10,7 @@ namespace ArcReactor
     public class encyclopedia
     {
         private List<Spell> spellList = new List<Spell>();
+        private List<Race> raceList = new List<Race>();
         private string filepath;
         private string fileType;
 
@@ -35,62 +36,64 @@ namespace ArcReactor
         public encyclopedia(string Filename, string FileType)
         {
             filepath = Filename;
-            fileType = FileType; 
+            fileType = FileType;
         }
-       
 
-        public object study()
+        // 
+        public void study()
         {
             XmlDocument xmlDoc = new XmlDocument();
             xmlDoc.Load(filepath);
 
-
-            foreach (XmlNode spellbook in xmlDoc.DocumentElement.ChildNodes)
+            if (fileType == "Spell")
             {
-                Spell curspell = new Spell();
-                foreach (XmlElement spell in spellbook)
+                foreach (XmlNode spellbook in xmlDoc.DocumentElement.ChildNodes)
                 {
-                    switch (spell.Name)
+                    Spell curspell = new Spell();
+                    foreach (XmlElement spell in spellbook)
                     {
-                        case "name":
-                            curspell.Name = spell.InnerText;
-                            break;
-                        case "level":
-                            curspell.Level = Convert.ToInt32(spell.InnerText);
-                            break;
-                        case "school":
-                            curspell.School = spell.InnerText;
-                            break;
-                        case "ritual":
-                            curspell.Ritual = spell.InnerText;
-                            break;
-                        case "time":
-                            curspell.Time = spell.InnerText;
-                            break;
-                        case "range":
-                            curspell.Range = spell.InnerText;
-                            break;
-                        case "components":
-                            curspell.Components = spell.InnerText;
-                            break;
-                        case "duration":
-                            curspell.Duration = spell.InnerText;
-                            break;
-                        case "classes":
-                            curspell.Classes = spell.InnerText;
-                            break;
-                        case "text":
-                            curspell.Text += spell.InnerText;
-                            break;
-                        default:
-                            break;
+                        switch (spell.Name)
+                        {
+                            case "name":
+                                curspell.Name = spell.InnerText.Replace("'", "");
+                                break;
+                            case "level":
+                                curspell.Level = Convert.ToInt32(spell.InnerText);
+                                break;
+                            case "school":
+                                curspell.School = spell.InnerText;
+                                break;
+                            case "ritual":
+                                curspell.Ritual = spell.InnerText;
+                                break;
+                            case "time":
+                                curspell.Time = spell.InnerText;
+                                break;
+                            case "range":
+                                curspell.Range = spell.InnerText;
+                                break;
+                            case "components":
+                                curspell.Components = spell.InnerText.Replace("'", "");
+                                break;
+                            case "duration":
+                                curspell.Duration = spell.InnerText;
+                                break;
+                            case "classes":
+                                curspell.Classes = spell.InnerText;
+                                break;
+                            case "text":
+                                curspell.Text += spell.InnerText.Replace("'", "");
+                                break;
+                            default:
+                                break;
+                        }
+
                     }
 
+                    spellList.Add(curspell);
                 }
-
-                spellList.Add(curspell);
             }
-            return spellList;
+
         }
 
         public String getInserts()
@@ -98,11 +101,12 @@ namespace ArcReactor
 
             var s = "";
 
-
-            foreach (var curspell in spellList)
+            if (fileType == "Spell")
             {
-                s +=
-                    String.Format(@"
+                foreach (var curspell in spellList)
+                {
+                    s +=
+                                       String.Format(@"
 
 INSERT dbo.Spells (Name, Level, School, Ritual, Time, Range, Components, Duration, Classes, Text)
 SELECT
@@ -117,18 +121,25 @@ SELECT
         ,'{8}'
         ,'{9}';
 ",
-                         curspell.Name.ToString().Replace("'", ""),
-                         curspell.Level,
-                         curspell.School,
-                         curspell.Ritual,
-                         curspell.Time,
-                         curspell.Range,
-                         curspell.Components.ToString().Replace("'", ""),
-                         curspell.Duration,
-                         curspell.Classes,
-                         curspell.Text.ToString().Replace("'", "")
-                         );
+     curspell.Name,
+     curspell.Level,
+     curspell.School,
+     curspell.Ritual,
+     curspell.Time,
+     curspell.Range,
+     curspell.Components,
+     curspell.Duration,
+     curspell.Classes,
+     curspell.Text
+     );
+
+
+
+
+                }
+
             }
+
             return s;
         }
     }

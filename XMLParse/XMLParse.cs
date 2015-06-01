@@ -58,11 +58,15 @@ namespace XMLParse
         {
             string path = txtOut.Text;
 
-            encyclopedia xml = new encyclopedia(Filename: txtIn.Text, FileType: cboType.SelectedItem.ToString()); 
+            encyclopedia xml = new encyclopedia(Filename: txtIn.Text, FileType: cboType.SelectedItem.ToString());
+
+            // Should just do this in the class instead of init it here? 
+            xml.study();
+
 
             if (!File.Exists(path))
             {
-                File.Create(path);
+                //File.Create(path);
                 TextWriter tw = new StreamWriter(path);
                 tw.WriteLine(xml.getInserts());
                 tw.Close();
