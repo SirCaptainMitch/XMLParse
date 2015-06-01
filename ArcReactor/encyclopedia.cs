@@ -12,7 +12,7 @@ namespace ArcReactor
     {
         private string filepath;
         private string fileType;
-   
+
         public encyclopedia(string Filename, string FileType)
         {
             filepath = Filename;
@@ -38,7 +38,7 @@ namespace ArcReactor
                                      Ritual = r.Element("ritual").Value,
                                      Time = r.Element("time").Value,
                                      Range = r.Element("range").Value,
-                                     Components = r.Element("components").Value.Replace("'",""),
+                                     Components = r.Element("components").Value.Replace("'", ""),
                                      Duration = r.Element("duration").Value,
                                      Classes = r.Element("classes").Value,
                                      Text = r.Elements("text").Select(x => x.Value.Replace("'", "")).ToList()
@@ -89,7 +89,8 @@ namespace ArcReactor
                                              select new
                                              {
                                                  TraitName = v.Element("name").Value.Replace("'", ""),
-                                                 Text = v.Element("text").Value.Replace("'", "")
+                                                 Text = v.Elements("text").Select(x => x.Value.Replace("'", "")).ToList()
+                                                 
                                              }).ToList()
 
                                 });
@@ -121,12 +122,68 @@ namespace ArcReactor
                      );
 
                     }
-
-
                 }
 
+            }
+
+            if (fileType == "Class")
+            {
+
+                var classList = (from r in xmlDoc.Descendants("class")
+                                 select new
+                                 {
+                                     Name = r.Element("name").Value.Replace("'", ""),
+                                     HD = r.Element("hd").Value.Replace("'", ""),
+                                     Prof = r.Element("Proficiency").Value.Replace("'", ""),
+                                     SpellAbility = (string)r.Element("spellAbility") ?? "",
+                                     AutoLevel = (from v in r.Elements("autolevel")
+                                                  select new
+                                                  {
+                                                      Level = (string) v.Attribute("level"),
+                                                      Feature = (from e in v.Elements("feature")
+                                                                 select new
+                                                                 {
+                                                                     FeatureName = e.Element("name").Value.Replace("'", ""),
+                                                                     Text = e.Elements("text").Select(x => x.Value.Replace("'", "")).ToList()
+                                                                 } ).ToList() 
+                                                  }
+                                                  ).ToList()
 
 
+
+                                 });
+ 
+                foreach (var cl in classList)
+                {
+                    foreach(var lvl in cl.AutoLevel)
+                    {
+                        foreach (var ft in lvl.Feature)
+                        {
+                            s += String.Format(@"
+
+                    INSERT dbo.Class_1 (Name, hd, prof, spell, level, feature, text)
+                    SELECT
+                            '{0}'
+                            ,'{1}'
+                            ,'{2}'
+                            ,'{3}'
+                            ,'{4}'
+                            ,'{5}'
+                            ,'{6}'
+                            ;
+                    ", cl.Name
+                     , cl.HD
+                     , cl.Prof
+                     , cl.SpellAbility
+                     , lvl.Level
+                     , ft.FeatureName
+                     , String.Join("<br> ", ft.Text.ToArray())
+                     );
+                        }
+                        
+                    }
+                    
+                }
             }
 
             return s;
