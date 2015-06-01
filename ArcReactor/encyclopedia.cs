@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace ArcReactor
 {
@@ -42,56 +43,40 @@ namespace ArcReactor
         // 
         public void study()
         {
-            XmlDocument xmlDoc = new XmlDocument();
-            xmlDoc.Load(filepath);
+            XDocument xmlDoc = XDocument.Load(filepath);
+            
 
             if (fileType == "Spell")
             {
-                foreach (XmlNode spellbook in xmlDoc.DocumentElement.ChildNodes)
-                {
-                    Spell curspell = new Spell();
-                    foreach (XmlElement spell in spellbook)
-                    {
-                        switch (spell.Name)
-                        {
-                            case "name":
-                                curspell.Name = spell.InnerText.Replace("'", "");
-                                break;
-                            case "level":
-                                curspell.Level = Convert.ToInt32(spell.InnerText);
-                                break;
-                            case "school":
-                                curspell.School = spell.InnerText;
-                                break;
-                            case "ritual":
-                                curspell.Ritual = spell.InnerText;
-                                break;
-                            case "time":
-                                curspell.Time = spell.InnerText;
-                                break;
-                            case "range":
-                                curspell.Range = spell.InnerText;
-                                break;
-                            case "components":
-                                curspell.Components = spell.InnerText.Replace("'", "");
-                                break;
-                            case "duration":
-                                curspell.Duration = spell.InnerText;
-                                break;
-                            case "classes":
-                                curspell.Classes = spell.InnerText;
-                                break;
-                            case "text":
-                                curspell.Text += spell.InnerText.Replace("'", "");
-                                break;
-                            default:
-                                break;
-                        }
 
-                    }
+                spellList = (from r in xmlDoc.Descendants("spell")
+                             select new
+                             {
+                                 Name = r.Element("name").Value,
+                                 Level = Convert.ToInt32(r.Element("level").Value),
+                                 School = r.Element("school").Value,
+                                 Ritual = r.Element("ritual").Value,
+                                 Time = r.Element("time").Value,
+                                 Range = r.Element("range").Value,
+                                 Components = r.Element("components").Value,
+                                 Duration = r.Element("duration").Value,
+                                 Classes = r.Element("classes").Value,
+                                 Text = r.Element("text").Value
+                             }).AsEnumerable().Select(x => new Spell
+                             {
+                                 Name = x.Name,
+                                 Level = x.Level,
+                                 School = x.School,
+                                 Ritual = x.Ritual,
+                                 Time = x.Time,
+                                 Range = x.Range,
+                                 Components = x.Components,
+                                 Duration = x.Duration,
+                                 Classes = x.Classes,
+                                 Text = x.Text
 
-                    spellList.Add(curspell);
-                }
+                             }).ToList(); 
+                             
             }
 
         }
