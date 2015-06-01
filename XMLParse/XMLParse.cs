@@ -45,7 +45,7 @@ namespace XMLParse
                 sf.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop).ToString();
                 //sf.Filter = "Text File (*.txt) | *.txt"; -- not needed 
                 sf.Title = "Save Data To...";
-                sf.FileName = "Output.txt";
+                sf.FileName = cboType.SelectedItem.ToString() + ".txt";
                 if (sf.ShowDialog() == DialogResult.OK)
                 {
                     txtIn.Text = sf.FileName;

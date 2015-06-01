@@ -12,11 +12,7 @@ namespace ArcReactor
     {
         private string filepath;
         private string fileType;
-
-        public encyclopedia()
-        {
-            throw new System.IO.FileNotFoundException();
-        }
+   
         public encyclopedia(string Filename, string FileType)
         {
             filepath = Filename;
