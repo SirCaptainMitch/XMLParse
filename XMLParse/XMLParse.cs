@@ -56,14 +56,9 @@ namespace XMLParse
 
         private void btnGo_Click(object sender, EventArgs e)
         {
-            string path = txtOut.Text;            
+            string path = txtOut.Text;
 
-            switch (cboType.SelectedItem.ToString())
-            {
-                case "Spell":
-                    var xml = new encyclopedia(Filename: txtIn.Text.ToString());
-                    break;                 
-            }
+            encyclopedia xml = new encyclopedia(Filename: txtIn.Text, FileType: cboType.SelectedItem.ToString()); 
 
             if (!File.Exists(path))
             {

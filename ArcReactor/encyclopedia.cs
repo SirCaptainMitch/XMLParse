@@ -11,7 +11,7 @@ namespace ArcReactor
     {
         private List<Spell> spellList = new List<Spell>();
         private string filepath;
-        public string fileType { get; set; }
+        private string fileType;
 
         /// <summary>
         /// Where are my godamn spells?
@@ -28,19 +28,6 @@ namespace ArcReactor
             }
         }
 
-        /// <summary>
-        /// How many godamn spells
-        /// </summary>
-        public int Spellcount
-        {
-            get
-            {
-                return SpellList.Count();
-            }
-            set
-            {
-            }
-        }
 
         /// <summary>
         /// Your godamn spells
@@ -74,11 +61,11 @@ namespace ArcReactor
         {
             throw new System.IO.FileNotFoundException();
         }
-        public encyclopedia(string Filename)
+        public encyclopedia(string Filename, string FileType)
         {
             filepath = Filename;
+            fileType = FileType; 
         }
-
        
 
         public object study()
