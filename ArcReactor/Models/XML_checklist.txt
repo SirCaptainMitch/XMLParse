@@ -1,0 +1,22 @@
+Tested with these files: 
+
+CharacterFiles
+	Backgrounds
+	Classes
+	Feats
+	Races
+Compendiums
+	Bestiary
+	Character
+	Items
+	Spells
+Items
+	Futuristic
+	...
+Monsters
+	Hoard
+	...
+Spells
+	...
+UnearthedArcana
+	...
