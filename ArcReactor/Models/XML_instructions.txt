@@ -21,4 +21,4 @@ use FromXml method in encyclopedia.cs class
 Then, wrap everything but the using statement at the top in the namespace ArcReactor.Models.<type>
 
 The full name for the object becomes ArcReactor.Models.<type>.compendium
-(COULD potentially be something other than compendium but haven't seen it
+(COULD potentially be something other than compendium but haven't seen it)
