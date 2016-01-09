@@ -1,0 +1,24 @@
+Instructions for creating models based on xml
+
+You need to use the xsd.exe tool which gets installed with the Windows SDK into a directory something similar to:
+
+C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin
+And on 64bit computers:
+
+C:\Program Files (x86)\Microsoft SDKs\Windows\v6.0A\bin
+On the first run, you use xsd.exe and you convert your sample XML into a XSD file (XML schema file):
+
+copy that file to another location (root of XMLParse app) and open a command prompt in that directory
+
+xsd yourfile.xml
+This gives you yourfile.xsd, which in a second step, you can convert again using xsd.exe into a C# class:
+
+xsd yourfile.xsd /c
+This should give you a file yourfile.cs which will contain a C# class that you can use to deserialize the XML file you're getting:
+
+use FromXml method in encyclopedia.cs class 
+
+Then, wrap everything but the using statement at the top in the namespace ArcReactor.Models.<type>
+
+The full name for the object becomes ArcReactor.Models.<type>.compendium
+(COULD potentially be something other than compendium but haven't seen it)
