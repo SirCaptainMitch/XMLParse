@@ -40,8 +40,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Background.cs" />
+    <Compile Include="Models\Character.cs" />
+    <Compile Include="Models\Class.cs" />
+    <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\Monster.cs" />
+    <Compile Include="Models\Race.cs" />
+    <Compile Include="Models\Spell.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="encyclopedia.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Models\Feat" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Models\XML_checklist.txt" />
+    <Content Include="Models\XML_instructions.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
