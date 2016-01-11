@@ -51,7 +51,7 @@
     <Compile Include="encyclopedia.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Models\Feat" />
+    <Compile Include="Models\Feat.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Models\XML_checklist.txt" />
