@@ -68,6 +68,8 @@ namespace ArcReactor
                                                .Select(x => x.Value.Replace("'", "")).ToList()
                                     });
 
+                    s = @"CREATE TABLE Spell ( Name VARCHAR(MAX), classes VARCHAR(MAX), components VARCHAR(MAX), duration VARCHAR(MAX), level VARCHAR(MAX), range VARCHAR(MAX), ritual VARCHAR(MAX), school VARCHAR(MAX), time VARCHAR(MAX), roll VARCHAR(MAX), text VARCHAR(MAX)) ";
+
                     foreach (var sl in spellList)
                     {
                         s += String.Format(@"
