@@ -120,7 +120,7 @@ namespace XMLParse
             this.label1.Location = new System.Drawing.Point(16, 103);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(60, 17);
+            this.label1.Size = new System.Drawing.Size(55, 16);
             this.label1.TabIndex = 6;
             this.label1.Text = "OutPath";
             // 
@@ -130,7 +130,7 @@ namespace XMLParse
             this.label2.Location = new System.Drawing.Point(16, 55);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(59, 17);
+            this.label2.Size = new System.Drawing.Size(57, 16);
             this.label2.TabIndex = 7;
             this.label2.Text = "FilePath";
             // 
@@ -140,7 +140,7 @@ namespace XMLParse
             this.label3.Location = new System.Drawing.Point(16, 6);
             this.label3.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(55, 17);
+            this.label3.Size = new System.Drawing.Size(55, 16);
             this.label3.TabIndex = 8;
             this.label3.Text = "FileTpe";
             // 
@@ -170,7 +170,7 @@ namespace XMLParse
             this.Controls.Add(this.btnGo);
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "XMLParse";
-            this.Text = "Form1";
+            this.Text = "XML Parser";
             this.ResumeLayout(false);
             this.PerformLayout();
 
