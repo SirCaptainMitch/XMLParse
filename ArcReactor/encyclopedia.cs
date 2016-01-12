@@ -255,11 +255,13 @@ namespace ArcReactor
                                         });
 
                     s = @"
-CREATE TABLE dbo.Monster (Monster_id  INT IDENTITY(1,1),name VARCHAR(MAX), ac VARCHAR(MAX), alignment VARCHAR(MAX), conditionImmune VARCHAR(MAX), cr VARCHAR(MAX), hitpoints VARCHAR(MAX), immune VARCHAR(MAX), languages VARCHAR(MAX), passive VARCHAR(MAX), reaction VARCHAR(MAX), resist VARCHAR(MAX), saves VARCHAR(MAX), senses VARCHAR(MAX), size VARCHAR(MAX), skill VARCHAR(MAX), speed VARCHAR(MAX), monstertype VARCHAR(MAX), vulnerable VARCHAR(MAX), strength VARCHAR(MAX), dex VARCHAR(MAX), cont VARCHAR(MAX), intel VARCHAR(MAX), wis VARCHAR(MAX), cha VARCHAR(MAX))
+CREATE TABLE dbo.Monster (Monster_id  INT IDENTITY(1,1),name VARCHAR(MAX), ac VARCHAR(MAX), alignment VARCHAR(MAX), conditionImmune VARCHAR(MAX), cr VARCHAR(MAX), hitpoints VARCHAR(MAX), immune VARCHAR(MAX), languages VARCHAR(MAX), passive VARCHAR(MAX), reaction VARCHAR(MAX), resist VARCHAR(MAX), saves VARCHAR(MAX), senses VARCHAR(MAX), size VARCHAR(MAX), skill VARCHAR(MAX), speed VARCHAR(MAX), spells VARCHAR(MAX),monstertype VARCHAR(MAX), vulnerable VARCHAR(MAX), strength VARCHAR(MAX), dex VARCHAR(MAX), cont VARCHAR(MAX), intel VARCHAR(MAX), wis VARCHAR(MAX), cha VARCHAR(MAX))
 
 CREATE TABLE dbo.Monster_Traits (monster_id INT, traitName VARCHAR(MAX), attack VARCHAR(MAX), text VARCHAR(MAX))
 
 CREATE TABLE dbo.Monster_Legendary (monster_id INT, legendaryName VARCHAR(MAX), attack VARCHAR(MAX), text VARCHAR(MAX))
+
+CREATE TABLE dbo.Monster_Actions (monster_id INT, actionName VARCHAR(MAX), attack VARCHAR(MAX), text VARCHAR(MAX))
 ";
 
                     foreach (var bl in monsterList)
@@ -267,7 +269,7 @@ CREATE TABLE dbo.Monster_Legendary (monster_id INT, legendaryName VARCHAR(MAX), 
                         s += String.Format(@"
 
                             INSERT dbo.Monster (name, ac, alignment, conditionImmune, cr, hitpoints, immune, languages, passive, reaction,
-                                                resist, saves, senses, size, skill, speed, monstertype, vulnerable, strength, dex, cont, intel, wis, cha)
+                                                resist, saves, senses, size, skill, speed, spells, monstertype, vulnerable, strength, dex, cont, intel, wis, cha)
                             SELECT 
                             '{0}'
                             ,'{1}'
@@ -293,6 +295,7 @@ CREATE TABLE dbo.Monster_Legendary (monster_id INT, legendaryName VARCHAR(MAX), 
                             ,'{21}'
                             ,'{22}'
                             ,'{23}'
+                            ,'{24}'
                             ;
                             ",
                                bl.Name,
@@ -329,7 +332,7 @@ CREATE TABLE dbo.Monster_Legendary (monster_id INT, legendaryName VARCHAR(MAX), 
                             INSERT dbo.Monster_Actions (monster_id, actionName, attack, text)
                             SELECT
                                 (SELECT TOP 1 monster_id FROM dbo.Monster WHERE name = '{0}')
-                                '{1}'
+                                ,'{1}'
                                 ,'{2}'
                                 ,'{3}'
                                 ;
@@ -348,7 +351,7 @@ CREATE TABLE dbo.Monster_Legendary (monster_id INT, legendaryName VARCHAR(MAX), 
                             INSERT dbo.Monster_Traits (monster_id, traitName, attack, text)
                             SELECT
                                 (SELECT TOP 1 monster_id FROM dbo.Monster WHERE name = '{0}')
-                                 '{1}'
+                                ,'{1}'
                                 ,'{2}'
                                 ,'{3}'
                             ;
@@ -367,7 +370,7 @@ CREATE TABLE dbo.Monster_Legendary (monster_id INT, legendaryName VARCHAR(MAX), 
                             INSERT dbo.Monster_Legendary (monster_id, legendaryName, attack, text)
                             SELECT
                                 (SELECT TOP 1 monster_id FROM dbo.Monster WHERE name = '{0}')
-                                 '{1}'
+                                ,'{1}'
                                 ,'{2}'
                                 ,'{3}'
                             ;
@@ -439,7 +442,7 @@ CREATE TABLE dbo.Race_Traits (Race_id INT, traitName VARCHAR(MAX), text VARCHAR(
                             INSERT dbo.Race_Traits (race_id, traitName, text)
                             SELECT
                                 (SELECT TOP 1 race_id FROM dbo.Race WHERE name = '{0}')
-                            '{1}'
+                            ,'{1}'
                             ,'{2}'
                             ;
                             ",
@@ -485,7 +488,7 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
 
                         INSERT dbo.Background (Name, Proficiency)
                         SELECT
-                                '{0}'
+                                ,'{0}'
                                 ,'{1}'
                                 ;
                        ", bl.Name
@@ -499,7 +502,7 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
                             INSERT dbo.Background_Traits (background_id, traitName, text)
                             SELECT
                                     (SELECT TOP 1 background_id FROM dbo.Background WHERE name = '{0}')
-                                    '{1}'
+                                    ,'{1}'
                                     ,'{2}'
                                     ;
                            ", bl.Name
@@ -656,7 +659,7 @@ CREATE TABLE dbo.Class_Spells (Class_id INT, classes VARCHAR(MAX), components VA
                                 INSERT dbo.Class_Levels (class_id, level, featureName, optional, proficiency, modifier, category, text)
                                 SELECT
                                         (SELECT TOP 1 class_id from dbo.Class where name = '{0}')
-                                        '{1}'
+                                        ,'{1}'
                                         ,'{2}'
                                         ,'{3}'
                                         ,'{4}'
@@ -683,7 +686,7 @@ CREATE TABLE dbo.Class_Spells (Class_id INT, classes VARCHAR(MAX), components VA
                                 INSERT dbo.Class_Slots (class_id, level, slots)
                                 SELECT
                                         (SELECT TOP 1 class_id from dbo.Class_1 where name = '{0}')
-                                        '{1}'
+                                        ,'{1}'
                                         ,'{2}'
                                         ;
                                 ", cl.Name
@@ -703,7 +706,7 @@ CREATE TABLE dbo.Class_Spells (Class_id INT, classes VARCHAR(MAX), components VA
                                 INSERT dbo.Class_Spells (class_id, classes, components, duration, level, name, range, school, time, text)
                                 SELECT
                                         (SELECT TOP 1 class_id from dbo.Class_1 where name = '{0}')
-                                        '{1}'
+                                        ,'{1}'
                                         ,'{2}'
                                         ,'{3}'
                                         ,'{4}'
