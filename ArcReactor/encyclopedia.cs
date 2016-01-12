@@ -42,10 +42,14 @@ CREATE TABLE dbo.Monster_Actions (monster_id INT, actionName VARCHAR(MAX), attac
 ";
                     break;
                 case "Spells":
-                    ret = @"CREATE TABLE dbo.Spell ( Spell_ID INT IDENTITY(1,1),Name VARCHAR(MAX), classes VARCHAR(MAX), components VARCHAR(MAX), duration VARCHAR(MAX), level VARCHAR(MAX), range VARCHAR(MAX), ritual VARCHAR(MAX), school VARCHAR(MAX), time VARCHAR(MAX), roll VARCHAR(MAX), text VARCHAR(MAX)) ";
+                    ret = @"
+CREATE TABLE dbo.Spell ( Spell_ID INT IDENTITY(1,1),Name VARCHAR(MAX), classes VARCHAR(MAX), components VARCHAR(MAX), duration VARCHAR(MAX), level VARCHAR(MAX), range VARCHAR(MAX), ritual VARCHAR(MAX), school VARCHAR(MAX), time VARCHAR(MAX), roll VARCHAR(MAX), text VARCHAR(MAX))
+";
                     break;
                 case "Items":
-                    ret = @"CREATE TABLE dbo.Item (Item_ID  INT IDENTITY(1,1),name VARCHAR(MAX),ac VARCHAR(MAX), dmg1 VARCHAR(MAX), dmg2 VARCHAR(MAX), dmgtype VARCHAR(MAX), property VARCHAR(MAX), range VARCHAR(MAX), roll VARCHAR(MAX), stealth VARCHAR(MAX), strength VARCHAR(MAX), type VARCHAR(MAX), weight VARCHAR(MAX), modifier VARCHAR(MAX), category VARCHAR(MAX), text VARCHAR(MAX))";
+                    ret = @"
+CREATE TABLE dbo.Item (Item_ID  INT IDENTITY(1,1),name VARCHAR(MAX),ac VARCHAR(MAX), dmg1 VARCHAR(MAX), dmg2 VARCHAR(MAX), dmgtype VARCHAR(MAX), property VARCHAR(MAX), range VARCHAR(MAX), roll VARCHAR(MAX), stealth VARCHAR(MAX), strength VARCHAR(MAX), type VARCHAR(MAX), weight VARCHAR(MAX), modifier VARCHAR(MAX), category VARCHAR(MAX), text VARCHAR(MAX))
+";
                     break;
                 case "Feats":
                     ret = @" 
@@ -168,8 +172,8 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
                                sl.Ritual,
                                sl.School,
                                sl.Time,
-                               String.Join("<br> ", sl.Roll.ToArray()),
-                               String.Join("<br> ", sl.Text.ToArray())
+                               String.Join("<br /> ", sl.Roll.ToArray()),
+                               String.Join("<br /> ", sl.Text.ToArray())
                                );
                     }
                 }
@@ -244,7 +248,7 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
                                il.Weight,
                                il.Modifier,
                                il.Category,
-                               String.Join("<br> ", il.Text.ToArray())
+                               String.Join("<br /> ", il.Text.ToArray())
                                );
                     }
                 }
@@ -398,8 +402,8 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
                                 ",
                             bl.Name,
                             act.ActionName,
-                            String.Join("<br> ", act.Attack.ToArray()),
-                            String.Join("<br> ", act.Text.ToArray())
+                            String.Join("<br /> ", act.Attack.ToArray()),
+                            String.Join("<br /> ", act.Text.ToArray())
                             );
                         }
 
@@ -417,8 +421,8 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
                             ",
                             bl.Name,
                             trt.TraitName,
-                            String.Join("<br> ", trt.Attack.ToArray()),
-                            String.Join("<br> ", trt.Text.ToArray())
+                            String.Join("<br /> ", trt.Attack.ToArray()),
+                            String.Join("<br /> ", trt.Text.ToArray())
                             );
                         }
 
@@ -436,8 +440,8 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
                             ",
                             bl.Name,
                             lgd.LegendaryName,
-                            String.Join("<br> ", lgd.Attack.ToArray()),
-                            String.Join("<br> ", lgd.Text.ToArray())
+                            String.Join("<br /> ", lgd.Attack.ToArray()),
+                            String.Join("<br /> ", lgd.Text.ToArray())
                             );
                         }
                     }
@@ -502,7 +506,7 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
                             ",
                             race.Name,
                             i.TraitName,
-                            String.Join("<br> ", i.Text.ToArray())
+                            String.Join("<br /> ", i.Text.ToArray())
                             );
                         }
                     }
@@ -555,7 +559,7 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
                                     ;
                            ", bl.Name
                             , trt.TraitName
-                            , String.Join("<br> ", trt.Text.ToArray())
+                            , String.Join("<br /> ", trt.Text.ToArray())
                             );
                         }
                     }
@@ -597,7 +601,7 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
                         , fl.Prerequisite
                         , fl.Modifier
                         , fl.Category
-                        , String.Join("<br> ", fl.Text.ToArray())
+                        , String.Join("<br /> ", fl.Text.ToArray())
                         );
                     }
                 }
@@ -707,7 +711,7 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
                                 , ft.Proficiency
                                 , ft.Modifier
                                 , ft.Category
-                                , String.Join("<br> ", ft.Text.ToArray())
+                                , String.Join("<br /> ", ft.Text.ToArray())
                                 );
                             }
                         }
@@ -718,7 +722,7 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
                         
                                 INSERT dbo.Class_Slots (class_id, level, slots)
                                 SELECT
-                                        (SELECT TOP 1 class_id from dbo.Class_1 where name = '{0}')
+                                        (SELECT TOP 1 class_id from dbo.Class where name = '{0}')
                                         ,'{1}'
                                         ,'{2}'
                                         ;
@@ -738,7 +742,7 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
                         
                                 INSERT dbo.Class_Spells (class_id, classes, components, duration, level, name, range, school, time, text)
                                 SELECT
-                                        (SELECT TOP 1 class_id from dbo.Class_1 where name = '{0}')
+                                        (SELECT TOP 1 class_id from dbo.Class where name = '{0}')
                                         ,'{1}'
                                         ,'{2}'
                                         ,'{3}'
@@ -758,7 +762,7 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
                                 , sp.Range
                                 , sp.School
                                 , sp.Time
-                                , String.Join("<br> ", sp.Text.ToArray())
+                                , String.Join("<br /> ", sp.Text.ToArray())
                                  );
                             }
                         }
