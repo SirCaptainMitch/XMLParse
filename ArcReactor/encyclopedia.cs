@@ -14,17 +14,89 @@ namespace ArcReactor
     {
         private string filepath;
         private string fileType;
+        private bool create;
+        
 
-        public encyclopedia(string Filename, string FileType)
+        public encyclopedia(string Filename, string FileType, bool Create)
         {
             filepath = Filename;
             fileType = FileType;
+            create = Create; 
+        }
+
+        private string tableCreate()
+        {
+            var ret = "";
+
+            switch(fileType)
+            {
+                case "Monsters":
+                    ret = @"
+CREATE TABLE dbo.Monster (Monster_id  INT IDENTITY(1,1),name VARCHAR(MAX), ac VARCHAR(MAX), alignment VARCHAR(MAX), conditionImmune VARCHAR(MAX), cr VARCHAR(MAX), hitpoints VARCHAR(MAX), immune VARCHAR(MAX), languages VARCHAR(MAX), passive VARCHAR(MAX), reaction VARCHAR(MAX), resist VARCHAR(MAX), saves VARCHAR(MAX), senses VARCHAR(MAX), size VARCHAR(MAX), skill VARCHAR(MAX), speed VARCHAR(MAX), spells VARCHAR(MAX),monstertype VARCHAR(MAX), vulnerable VARCHAR(MAX), strength VARCHAR(MAX), dex VARCHAR(MAX), cont VARCHAR(MAX), intel VARCHAR(MAX), wis VARCHAR(MAX), cha VARCHAR(MAX))
+
+CREATE TABLE dbo.Monster_Traits (monster_id INT, traitName VARCHAR(MAX), attack VARCHAR(MAX), text VARCHAR(MAX))
+
+CREATE TABLE dbo.Monster_Legendary (monster_id INT, legendaryName VARCHAR(MAX), attack VARCHAR(MAX), text VARCHAR(MAX))
+
+CREATE TABLE dbo.Monster_Actions (monster_id INT, actionName VARCHAR(MAX), attack VARCHAR(MAX), text VARCHAR(MAX))
+";
+                    break;
+                case "Spells":
+                    ret = @"CREATE TABLE dbo.Spell ( Spell_ID INT IDENTITY(1,1),Name VARCHAR(MAX), classes VARCHAR(MAX), components VARCHAR(MAX), duration VARCHAR(MAX), level VARCHAR(MAX), range VARCHAR(MAX), ritual VARCHAR(MAX), school VARCHAR(MAX), time VARCHAR(MAX), roll VARCHAR(MAX), text VARCHAR(MAX)) ";
+                    break;
+                case "Items":
+                    ret = @"CREATE TABLE dbo.Item (Item_ID  INT IDENTITY(1,1),name VARCHAR(MAX),ac VARCHAR(MAX), dmg1 VARCHAR(MAX), dmg2 VARCHAR(MAX), dmgtype VARCHAR(MAX), property VARCHAR(MAX), range VARCHAR(MAX), roll VARCHAR(MAX), stealth VARCHAR(MAX), strength VARCHAR(MAX), type VARCHAR(MAX), weight VARCHAR(MAX), modifier VARCHAR(MAX), category VARCHAR(MAX), text VARCHAR(MAX))";
+                    break;
+                case "Feats":
+                    ret = @" 
+CREATE TABLE dbo.Feat (Name VARCHAR(MAX), prerequisite VARCHAR(MAX), modifier VARCHAR(MAX), category VARCHAR(MAX), text VARCHAR(MAX))
+";
+                    break;
+                case "Characters":
+                    ret = @"";
+                    break;
+                case "Races":
+                    ret = @" 
+CREATE TABLE dbo.Race (Race_ID  INT IDENTITY(1,1),name VARCHAR(MAX), size VARCHAR(MAX), speed VARCHAR(MAX), ability VARCHAR(MAX), proficiency VARCHAR(MAX))
+
+CREATE TABLE dbo.Race_Traits (Race_id INT, traitName VARCHAR(MAX), text VARCHAR(MAX))
+";
+                    break;
+                case "Classes":
+                    ret = @"
+CREATE TABLE dbo.Class (Class_ID INT IDENTITY(1,1),Name VARCHAR(MAX), hd VARCHAR(MAX), prof VARCHAR(MAX), spell VARCHAR(MAX))
+
+CREATE TABLE dbo.Class_Levels (Class_id INT, level VARCHAR(MAX), featureName VARCHAR(MAX), optional VARCHAR(MAX), proficiency VARCHAR(MAX), modifier VARCHAR(MAX), category VARCHAR(MAX), text VARCHAR(MAX))
+
+CREATE TABLE dbo.Class_Slots (Class_id INT, level VARCHAR(MAX), slots VARCHAR(MAX))
+
+CREATE TABLE dbo.Class_Spells (Class_id INT, classes VARCHAR(MAX), components VARCHAR(MAX), duration VARCHAR(MAX), level VARCHAR(MAX), name VARCHAR(MAX), range VARCHAR(MAX), school VARCHAR(MAX), time VARCHAR(MAX), text VARCHAR(MAX))
+
+";
+                    break;
+                case "Backgrounds":
+                    ret = @" 
+CREATE TABLE dbo.Background (Background_id INT IDENTITY(1,1), Name VARCHAR(MAX), Proficiency VARCHAR(MAX))
+
+CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), text VARCHAR(MAX))
+";
+                    break;
+                
+
+            }
+
+            return ret;
         }
 
 
         public String getInserts()
         {
             var s = "";
+
+            if(create)
+            {
+                s = tableCreate();
+            };
 
             try
             {
@@ -67,8 +139,6 @@ namespace ArcReactor
                                         Text = r.Elements("text").Where(x => x.Value != "" && x.Value != null)
                                                .Select(x => x.Value.Replace("'", "")).ToList()
                                     });
-
-                    s = @"CREATE TABLE dbo.Spell ( Spell_ID INT IDENTITY(1,1),Name VARCHAR(MAX), classes VARCHAR(MAX), components VARCHAR(MAX), duration VARCHAR(MAX), level VARCHAR(MAX), range VARCHAR(MAX), ritual VARCHAR(MAX), school VARCHAR(MAX), time VARCHAR(MAX), roll VARCHAR(MAX), text VARCHAR(MAX)) ";
 
                     foreach (var sl in spellList)
                     {
@@ -135,8 +205,6 @@ namespace ArcReactor
                                         Text = r.Elements("text").Where(x => x.Value != "" && x.Value != null)
                                                .Select(x => x.Value.Replace("'", "")).ToList()
                                     });
-
-                    s = @"CREATE TABLE dbo.Item (Item_ID  INT IDENTITY(1,1),name VARCHAR(MAX),ac VARCHAR(MAX), dmg1 VARCHAR(MAX), dmg2 VARCHAR(MAX), dmgtype VARCHAR(MAX), property VARCHAR(MAX), range VARCHAR(MAX), roll VARCHAR(MAX), stealth VARCHAR(MAX), strength VARCHAR(MAX), type VARCHAR(MAX), weight VARCHAR(MAX), modifier VARCHAR(MAX), category VARCHAR(MAX), text VARCHAR(MAX))";
 
                     foreach (var il in itemList)
                     {
@@ -254,15 +322,6 @@ namespace ArcReactor
                                                          }).ToList()
                                         });
 
-                    s = @"
-CREATE TABLE dbo.Monster (Monster_id  INT IDENTITY(1,1),name VARCHAR(MAX), ac VARCHAR(MAX), alignment VARCHAR(MAX), conditionImmune VARCHAR(MAX), cr VARCHAR(MAX), hitpoints VARCHAR(MAX), immune VARCHAR(MAX), languages VARCHAR(MAX), passive VARCHAR(MAX), reaction VARCHAR(MAX), resist VARCHAR(MAX), saves VARCHAR(MAX), senses VARCHAR(MAX), size VARCHAR(MAX), skill VARCHAR(MAX), speed VARCHAR(MAX), spells VARCHAR(MAX),monstertype VARCHAR(MAX), vulnerable VARCHAR(MAX), strength VARCHAR(MAX), dex VARCHAR(MAX), cont VARCHAR(MAX), intel VARCHAR(MAX), wis VARCHAR(MAX), cha VARCHAR(MAX))
-
-CREATE TABLE dbo.Monster_Traits (monster_id INT, traitName VARCHAR(MAX), attack VARCHAR(MAX), text VARCHAR(MAX))
-
-CREATE TABLE dbo.Monster_Legendary (monster_id INT, legendaryName VARCHAR(MAX), attack VARCHAR(MAX), text VARCHAR(MAX))
-
-CREATE TABLE dbo.Monster_Actions (monster_id INT, actionName VARCHAR(MAX), attack VARCHAR(MAX), text VARCHAR(MAX))
-";
 
                     foreach (var bl in monsterList)
                     {
@@ -409,11 +468,6 @@ CREATE TABLE dbo.Monster_Actions (monster_id INT, actionName VARCHAR(MAX), attac
                                                  }).ToList()
                                     });
 
-                    s = @" 
-CREATE TABLE dbo.Race (Race_ID  INT IDENTITY(1,1),name VARCHAR(MAX), size VARCHAR(MAX), speed VARCHAR(MAX), ability VARCHAR(MAX), proficiency VARCHAR(MAX))
-
-CREATE TABLE dbo.Race_Traits (Race_id INT, traitName VARCHAR(MAX), text VARCHAR(MAX))
-";
 
                     foreach (var race in raceList)
                     {
@@ -476,12 +530,6 @@ CREATE TABLE dbo.Race_Traits (Race_id INT, traitName VARCHAR(MAX), text VARCHAR(
                                                       }).ToList()
                                          });
 
-                    s = @" 
-CREATE TABLE dbo.Background (Background_id INT IDENTITY(1,1), Name VARCHAR(MAX), Proficiency VARCHAR(MAX))
-
-CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), text VARCHAR(MAX))
-";
-
                     foreach (var bl in backgroundList)
                     {
                         s += String.Format(@"
@@ -532,10 +580,6 @@ CREATE TABLE dbo.Background_Traits (Background_id INT, traitName VARCHAR(MAX), t
                                         Text = r.Elements("text").Where(x => x.Value != "")
                                             .Select(x => x.Value.Replace("'", "")).ToList(),
                                     });
-
-                    s = @" 
-CREATE TABLE dbo.Feat (Name VARCHAR(MAX), prerequisite VARCHAR(MAX), modifier VARCHAR(MAX), category VARCHAR(MAX), text VARCHAR(MAX))
-";
 
                     foreach (var fl in featList)
                     {
@@ -621,17 +665,6 @@ CREATE TABLE dbo.Feat (Name VARCHAR(MAX), prerequisite VARCHAR(MAX), modifier VA
                                          Time = ((string)r.Element("time") ?? "").Replace("'", ""),
                                          Text = r.Elements("text").Where(x => x.Value != "").Select(x => x.Value.Replace("'", "")).ToList()
                                      });
-
-                    s = @"
-CREATE TABLE dbo.Class (Class_ID INT IDENTITY(1,1),Name VARCHAR(MAX), hd VARCHAR(MAX), prof VARCHAR(MAX), spell VARCHAR(MAX))
-
-CREATE TABLE dbo.Class_Levels (Class_id INT, level VARCHAR(MAX), featureName VARCHAR(MAX), optional VARCHAR(MAX), proficiency VARCHAR(MAX), modifier VARCHAR(MAX), category VARCHAR(MAX), text VARCHAR(MAX))
-
-CREATE TABLE dbo.Class_Slots (Class_id INT, level VARCHAR(MAX), slots VARCHAR(MAX))
-
-CREATE TABLE dbo.Class_Spells (Class_id INT, classes VARCHAR(MAX), components VARCHAR(MAX), duration VARCHAR(MAX), level VARCHAR(MAX), name VARCHAR(MAX), range VARCHAR(MAX), school VARCHAR(MAX), time VARCHAR(MAX), text VARCHAR(MAX))
-
-";
 
                     foreach (var cl in classList)
                     {

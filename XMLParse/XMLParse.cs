@@ -85,7 +85,7 @@ namespace XMLParse
             {
                 string path = txtOut.Text;
 
-                encyclopedia xml = new encyclopedia(Filename: txtIn.Text, FileType: cboType.SelectedItem.ToString());
+                encyclopedia xml = new encyclopedia(Filename: txtIn.Text, FileType: cboType.SelectedItem.ToString(), Create: cboCreate.Checked);
 
                 if (!File.Exists(path))
                 {
